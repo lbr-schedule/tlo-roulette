@@ -6,317 +6,182 @@
     <title>🎰 T-LO 俄羅斯輪盤</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); min-height: 100vh; color: white; }
-        h1 { text-align: center; padding: 20px; color: #ffd700; }
-        h1 span { font-size: 2.5rem; }
-        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; color: white; }
+        h1 { text-align: center; padding: 20px; color: #ffd700; font-size: 1.8rem; }
+        .container { max-width: 500px; margin: 0 auto; padding: 15px; }
         
-        /* 餘額顯示 */
-        .balance { text-align: center; font-size: 1.5rem; margin-bottom: 20px; padding: 15px; background: rgba(255,215,0,0.2); border-radius: 15px; }
+        .balance { text-align: center; font-size: 1.3rem; margin-bottom: 15px; padding: 12px; background: rgba(255,215,0,0.15); border-radius: 12px; }
         .balance span { color: #ffd700; font-weight: bold; }
         
-        /* 登入區 */
-        .auth-section { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; margin-bottom: 20px; }
-        .auth-section input { width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #555; border-radius: 10px; background: #2a2a4a; color: white; font-size: 1rem; }
-        .auth-section button { width: 100%; padding: 12px; background: linear-gradient(135deg, #ffd700, #ff8c00); border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; }
+        .wheel-container { text-align: center; margin: 15px 0; }
+        .wheel { width: 200px; height: 200px; border-radius: 50%; margin: 0 auto; border: 6px solid #ffd700; background: conic-gradient(#00aa00 0deg 9.7deg, #cc0000 9.7deg 19.4deg, #000 19.4deg 29.1deg, #cc0000 29.1deg 38.8deg, #000 38.8deg 48.5deg, #cc0000 48.5deg 58.2deg, #000 58.2deg 67.9deg, #cc0000 67.9deg 77.6deg, #000 77.6deg 87.3deg, #cc0000 87.3deg 97deg, #000 97deg 106.7deg, #cc0000 106.7deg 116.4deg, #000 116.4deg 126.1deg, #cc0000 126.1deg 135.8deg, #000 135.8deg 145.5deg, #cc0000 145.5deg 155.2deg, #000 155.2deg 164.9deg, #cc0000 164.9deg 174.6deg, #000 174.6deg 184.3deg, #cc0000 184.3deg 194deg, #000 194deg 203.7deg, #cc0000 203.7deg 213.4deg, #000 213.4deg 223.1deg, #cc0000 223.1deg 232.8deg, #000 232.8deg 242.5deg, #cc0000 242.5deg 252.2deg, #000 252.2deg 261.9deg, #cc0000 261.9deg 271.6deg, #000 271.6deg 281.3deg, #cc0000 281.3deg 291deg, #000 291deg 300.7deg, #cc0000 300.7deg 310.4deg, #000 310.4deg 320.1deg, #cc0000 320.1deg 329.8deg, #000 329.8deg 339.5deg, #cc0000 339.5deg 349.2deg, #000 349.2deg 360deg); }
+        .wheel-pointer { font-size: 1.5rem; margin-bottom: 5px; }
         
-        /* 遊戲區 */
-        .game-section { display: none; }
-        .game-section.active { display: block; }
-        
-        /* 輪盤 */
-        .wheel-container { text-align: center; margin: 20px 0; }
-        .wheel { width: 250px; height: 250px; border-radius: 50%; margin: 0 auto; position: relative; border: 8px solid #ffd700; background: conic-gradient(
-            #00aa00 0deg 9.7deg,
-            #cc0000 9.7deg 19.4deg,
-            #000 19.4deg 29.1deg,
-            #cc0000 29.1deg 38.8deg,
-            #000 38.8deg 48.5deg,
-            #cc0000 48.5deg 58.2deg,
-            #000 58.2deg 67.9deg,
-            #cc0000 67.9deg 77.6deg,
-            #000 77.6deg 87.3deg,
-            #cc0000 87.3deg 97deg,
-            #000 97deg 106.7deg,
-            #cc0000 106.7deg 116.4deg,
-            #000 116.4deg 126.1deg,
-            #cc0000 126.1deg 135.8deg,
-            #000 135.8deg 145.5deg,
-            #cc0000 145.5deg 155.2deg,
-            #000 155.2deg 164.9deg,
-            #cc0000 164.9deg 174.6deg,
-            #000 174.6deg 184.3deg,
-            #cc0000 184.3deg 194deg,
-            #000 194deg 203.7deg,
-            #cc0000 203.7deg 213.4deg,
-            #000 213.4deg 223.1deg,
-            #cc0000 223.1deg 232.8deg,
-            #000 232.8deg 242.5deg,
-            #cc0000 242.5deg 252.2deg,
-            #000 252.2deg 261.9deg,
-            #cc0000 261.9deg 271.6deg,
-            #000 271.6deg 281.3deg,
-            #cc0000 281.3deg 291deg,
-            #000 291deg 300.7deg,
-            #cc0000 300.7deg 310.4deg,
-            #000 310.4deg 320.1deg,
-            #cc0000 320.1deg 329.8deg,
-            #000 329.8deg 339.5deg,
-            #cc0000 339.5deg 349.2deg,
-            #000 349.2deg 360deg
-        ); }
-        .wheel-pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); font-size: 2rem; }
-        
-        /* 結果顯示 */
-        .result-display { text-align: center; font-size: 2rem; padding: 20px; margin: 20px 0; border-radius: 15px; }
+        .result-display { text-align: center; font-size: 1.5rem; padding: 15px; margin: 15px 0; border-radius: 12px; }
         .result-display.red { background: rgba(204,0,0,0.3); }
         .result-display.black { background: rgba(0,0,0,0.3); }
         .result-display.green { background: rgba(0,170,0,0.3); }
         .result-display.spinning { background: rgba(255,215,0,0.3); animation: pulse 0.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
         
-        /* 下注區 */
-        .betting-area { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin-top: 20px; }
-        .bet-timer { text-align: center; font-size: 1.5rem; color: #ffd700; margin-bottom: 15px; }
-        .bet-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
-        .bet-btn { padding: 15px; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; }
+        .timer { text-align: center; font-size: 1.2rem; color: #ffd700; margin-bottom: 15px; }
+        
+        .bet-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+        .bet-btn { padding: 12px; border: none; border-radius: 10px; font-size: 0.95rem; font-weight: bold; cursor: pointer; }
         .bet-btn.red { background: linear-gradient(135deg, #cc0000, #ff4444); color: white; }
         .bet-btn.black { background: linear-gradient(135deg, #333, #666); color: white; }
         .bet-btn.odd { background: linear-gradient(135deg, #0066cc, #00aaff); color: white; }
         .bet-btn.even { background: linear-gradient(135deg, #660066, #aa00aa); color: white; }
         
-        .number-bet { display: flex; gap: 10px; margin-bottom: 15px; }
-        .number-bet input { flex: 1; padding: 12px; border: 2px solid #555; border-radius: 10px; background: #2a2a4a; color: white; }
-        .number-bet button { padding: 12px 20px; background: #ffd700; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .number-bet { display: flex; gap: 8px; margin-bottom: 15px; }
+        .number-bet input { flex: 1; padding: 10px; border: 2px solid #555; border-radius: 8px; background: #2a2a4a; color: white; font-size: 0.9rem; }
+        .number-bet button { padding: 10px 15px; background: #ffd700; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
         
-        /* 當前下注 */
-        .current-bets { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-top: 15px; }
-        .current-bets h3 { color: #ffd700; margin-bottom: 10px; }
-        .bet-item { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #444; }
+        .my-bets { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 10px; margin-top: 10px; }
+        .my-bets h4 { color: #ffd700; margin-bottom: 8px; font-size: 0.95rem; }
+        .bet-item { padding: 5px 0; border-bottom: 1px solid #444; font-size: 0.9rem; }
         
-        /* 歷史 */
-        .history { margin-top: 20px; }
-        .history-item { display: inline-block; padding: 8px 12px; margin: 3px; border-radius: 20px; font-size: 0.9rem; }
-        .history-item.red { background: #cc0000; }
-        .history-item.black { background: #333; }
-        .history-item.green { background: #00aa00; }
-        
-        /* 離開按鈕 */
-        .leave-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #666, #999); border: none; border-radius: 10px; color: white; font-size: 1rem; margin-top: 20px; cursor: pointer; }
+        .auth-section { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; }
+        .auth-section input { width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #555; border-radius: 10px; background: #2a2a4a; color: white; font-size: 0.95rem; }
+        .auth-section label { display: block; font-size: 0.85rem; color: #aaa; margin-bottom: 4px; }
+        .auth-section button { width: 100%; padding: 12px; background: linear-gradient(135deg, #ffd700, #ff8c00); border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 5px; }
+        .auth-section .required { color: #ff6b6b; }
     </style>
 </head>
 <body>
-    <h1><span>🎰</span> T-LO 俄羅斯輪盤</h1>
+    <h1>🎰 T-LO 俄羅斯輪盤</h1>
     
     <div class="container">
-        <!-- 餘額 -->
-        <div class="balance" id="balanceDisplay">💰 餘額: <span id="balance">0</span></div>
+        <div class="balance">💰 餘額: <span id="balance">1000</span></div>
         
-        <!-- 登入區 -->
         <div class="auth-section" id="authSection">
-            <input type="text" id="username" placeholder="帳號">
-            <input type="password" id="password" placeholder="密碼">
-            <button onclick="doLogin()">登入</button>
-            <p style="text-align: center; margin-top: 10px; color: #888;">還沒有帳號？用同樣的帳號密碼註冊即可</p>
+            <input type="text" id="username" placeholder="帳號名稱" value="Player1">
+            <label>姓名 <span class="required">*</span></label>
+            <input type="text" id="realname" placeholder="真實姓名">
+            <label>電話 <span class="required">*</span></label>
+            <input type="tel" id="phone" placeholder="聯絡電話">
+            <label>信箱</label>
+            <input type="email" id="email" placeholder="電子郵件（選填）">
+            <button onclick="doLogin()">開始遊戲</button>
         </div>
         
-        <!-- 遊戲區 -->
-        <div class="game-section" id="gameSection">
+        <div class="game-section" id="gameSection" style="display:none;">
             <div class="wheel-container">
                 <div class="wheel-pointer">▼</div>
-                <div class="wheel" id="wheel"></div>
+                <div class="wheel"></div>
             </div>
             
-            <div class="result-display" id="resultDisplay">等待下注...</div>
+            <div class="result-display" id="resultDisplay">等待開始...</div>
+            <div class="timer" id="timer">-</div>
             
-            <div class="betting-area">
-                <div class="bet-timer" id="betTimer">⏰ 下注時間: 10秒</div>
-                
-                <div class="bet-buttons">
-                    <button class="bet-btn red" onclick="placeBet('red', 50)">🔴 紅色 (2倍)</button>
-                    <button class="bet-btn black" onclick="placeBet('black', 50)">⚫ 黑色 (2倍)</button>
-                    <button class="bet-btn odd" onclick="placeBet('odd', 50)">🔢 單數 (2倍)</button>
-                    <button class="bet-btn even" onclick="placeBet('even', 50)">⚇ 雙數 (2倍)</button>
-                </div>
-                
-                <div class="number-bet">
-                    <input type="number" id="betNumber" placeholder="選擇數字 (0-36)" min="0" max="36">
-                    <input type="number" id="betAmount" placeholder="金額" min="10">
-                    <button onclick="placeNumberBet()">下注數字 (10倍)</button>
-                </div>
+            <div class="bet-buttons">
+                <button class="bet-btn red" onclick="placeBet('color', 50, 'red')">🔴 紅 (2x)</button>
+                <button class="bet-btn black" onclick="placeBet('color', 50, 'black')">⚫ 黑 (2x)</button>
+                <button class="bet-btn odd" onclick="placeBet('odd_even', 50, 'odd')">🔢 單 (2x)</button>
+                <button class="bet-btn even" onclick="placeBet('odd_even', 50, 'even')">⚇ 雙 (2x)</button>
             </div>
             
-            <div class="current-bets" id="currentBets">
-                <h3>📋 當前下注</h3>
-                <div id="betsList">尚無下注</div>
+            <div class="number-bet">
+                <input type="number" id="betNum" placeholder="數字 0-36" min="0" max="36">
+                <input type="number" id="betAmt" placeholder="金額" min="10" value="50">
+                <button onclick="placeNumberBet()">數字 (10x)</button>
             </div>
             
-            <button class="leave-btn" onclick="doLogout()">登出</button>
+            <div class="my-bets">
+                <h4>📋 我的下注</h4>
+                <div id="myBets">尚無下注</div>
+            </div>
         </div>
     </div>
 
     <script>
-        let ws = null;
-        let myName = '';
-        let myBalance = 0;
+        let ws, myName = '', myBalance = 1000, gamePhase = 'idle', myCurrentBets = [], myProfile = {};
         
         function connect() {
-            ws = new WebSocket('wss://' + location.host);
-            
-            ws.onopen = () => {
-                ws.send(JSON.stringify({ type: 'join', username: myName }));
-            };
-            
-            ws.onmessage = (event) => {
-                const data = JSON.parse(event.data);
-                handleMessage(data);
-            };
-            
-            ws.onclose = () => {
-                setTimeout(connect, 3000);
-            };
+            ws = new WebSocket('ws://' + location.host);
+            ws.onopen = () => ws.send(JSON.stringify({ type: 'join', username: myName, profile: myProfile }));
+            ws.onmessage = (e) => handleMessage(JSON.parse(e.data));
+            ws.onclose = () => setTimeout(connect, 3000);
         }
         
         function handleMessage(data) {
             switch(data.type) {
                 case 'joined':
-                    alert('加入成功！');
+                    myBalance = data.balance || 1000;
+                    document.getElementById('balance').textContent = myBalance;
                     break;
-                    
                 case 'betting_start':
-                    document.getElementById('resultDisplay').textContent = '⏰ 下注時間開始！';
+                    gamePhase = 'betting';
+                    myCurrentBets = [];
+                    document.getElementById('resultDisplay').textContent = '⏰ 下注時間!';
                     document.getElementById('resultDisplay').className = 'result-display spinning';
                     updateTimer(data.duration);
+                    updateMyBets();
                     break;
-                    
-                case 'bets_update':
-                    updateBetsDisplay(data.bets);
-                    break;
-                    
                 case 'spinning':
-                    document.getElementById('resultDisplay').textContent = '🎰 轉動中... ' + data.result;
+                    gamePhase = 'spinning';
+                    document.getElementById('resultDisplay').textContent = '🎰 轉動中...';
                     document.getElementById('resultDisplay').className = 'result-display spinning';
                     break;
-                    
                 case 'result':
-                    showResult(data);
+                    gamePhase = 'result';
+                    const colors = { red: '🔴 紅色', black: '⚫ 黑色', green: '🟢 綠色' };
+                    document.getElementById('resultDisplay').textContent = '結果: ' + data.result + ' ' + colors[data.color];
+                    document.getElementById('resultDisplay').className = 'result-display ' + data.color;
+                    const myWin = data.winners.find(w => w.username === myName);
+                    const myLoss = data.losers.find(l => l.username === myName);
+                    if (myWin) { myBalance += myWin.prize; alert('🎉 贏了 ' + myWin.prize + '！'); }
+                    if (myLoss) { myBalance -= myLoss.amount; }
+                    document.getElementById('balance').textContent = myBalance;
                     break;
             }
         }
         
+        let timerInterval;
         function updateTimer(duration) {
-            let remaining = Math.floor(duration / 1000);
-            const timer = document.getElementById('betTimer');
-            
-            const interval = setInterval(() => {
-                remaining--;
-                timer.textContent = '⏰ 下注時間: ' + remaining + '秒';
-                if (remaining <= 0) clearInterval(interval);
+            clearInterval(timerInterval);
+            let sec = Math.floor(duration / 1000);
+            timerInterval = setInterval(() => {
+                sec--;
+                document.getElementById('timer').textContent = '⏰ ' + sec + '秒';
+                if (sec <= 0) clearInterval(timerInterval);
             }, 1000);
+            document.getElementById('timer').textContent = '⏰ ' + sec + '秒';
         }
         
-        function showResult(data) {
-            const colors = { red: '🔴 紅色', black: '⚫ 黑色', green: '🟢 綠色' };
-            document.getElementById('resultDisplay').textContent = '結果: ' + data.result + ' - ' + colors[data.color];
-            document.getElementById('resultDisplay').className = 'result-display ' + data.color;
-            
-            // 更新餘額
-            const myResult = data.winners.find(w => w.username === myName);
-            if (myResult) {
-                myBalance += myResult.winAmount;
-                alert('🎉 恭喜贏了 ' + myResult.winAmount + '！');
-            } else {
-                const myLoss = data.losers.find(l => l.username === myName);
-                if (myLoss) {
-                    alert('😢 你输了 ' + myLoss.totalBet);
-                }
-            }
-            document.getElementById('balance').textContent = myBalance;
-        }
-        
-        function updateBetsDisplay(bets) {
-            const list = document.getElementById('betsList');
-            let html = '';
-            
-            for (const [username, userBets] of Object.entries(bets)) {
-                for (const [type, amount] of Object.entries(userBets)) {
-                    html += '<div class="bet-item"><span>' + username + ' → ' + type + '</span><span>' + amount + '</span></div>';
-                }
-            }
-            
-            list.innerHTML = html || '尚無下注';
-        }
-        
-        async function doLogin() {
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
-            
-            if (!username || !password) { alert('請填寫帳號和密碼'); return; }
-            
-            // 先嘗試登入
-            let res = await fetch('/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
-            let data = await res.json();
-            
-            if (!data.success) {
-                // 嘗試註冊
-                res = await fetch('/api/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
-                });
-                data = await res.json();
-            }
-            
-            if (data.success) {
-                myName = username;
-                document.getElementById('authSection').style.display = 'none';
-                document.getElementById('gameSection').classList.add('active');
-                
-                // 取得餘額
-                res = await fetch('/api/balance/' + username);
-                data = await res.json();
-                myBalance = data.balance || 1000;
-                document.getElementById('balance').textContent = myBalance;
-                
-                connect();
-            } else {
-                alert(data.message || '登入失敗');
-            }
-        }
-        
-        function placeBet(type, amount) {
-            if (ws && ws.readyState === WebSocket.OPEN) {
-                ws.send(JSON.stringify({ type: 'bet', username: myName, betType: type, amount: amount }));
-            }
+        function placeBet(type, amount, choice) {
+            if (gamePhase !== 'betting') { alert('現在不能下注！'); return; }
+            ws.send(JSON.stringify({ type: 'bet', username: myName, betType: type, amount, color: choice, choice }));
+            myCurrentBets.push({ type, amount, info: choice });
+            updateMyBets();
         }
         
         function placeNumberBet() {
-            const number = parseInt(document.getElementById('betNumber').value);
-            const amount = parseInt(document.getElementById('betAmount').value);
-            
-            if (isNaN(number) || number < 0 || number > 36) {
-                alert('請選擇 0-36 的數字');
-                return;
-            }
-            if (isNaN(amount) || amount < 10) {
-                alert('請輸入金額（至少10）');
-                return;
-            }
-            
-            if (ws && ws.readyState === WebSocket.OPEN) {
-                ws.send(JSON.stringify({ type: 'bet', username: myName, betType: 'number', amount: amount, number: number }));
-            }
+            const num = parseInt(document.getElementById('betNum').value);
+            const amt = parseInt(document.getElementById('betAmt').value);
+            if (isNaN(num) || num < 0 || num > 36) { alert('請選0-36數字'); return; }
+            if (isNaN(amt) || amt < 10) { alert('金額至少10'); return; }
+            if (gamePhase !== 'betting') { alert('現在不能下注！'); return; }
+            ws.send(JSON.stringify({ type: 'bet', username: myName, betType: 'number', amount: amt, number: num }));
+            myCurrentBets.push({ type: 'number', amount: amt, info: '#' + num });
+            updateMyBets();
         }
         
-        function doLogout() {
-            if (ws) ws.close();
-            myName = '';
-            document.getElementById('authSection').style.display = 'block';
-            document.getElementById('gameSection').classList.remove('active');
+        function updateMyBets() {
+            document.getElementById('myBets').innerHTML = myCurrentBets.length ? 
+                myCurrentBets.map(b => '<div class="bet-item">' + b.info + ' → ' + b.amount + '</div>').join('') : 
+                '尚無下注';
+        }
+        
+        function doLogin() {
+            myName = document.getElementById('username').value || 'Player' + Math.floor(Math.random() * 1000);
+            const realname = document.getElementById('realname').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            myProfile = { realname, phone, email };
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('gameSection').style.display = 'block';
+            connect();
         }
     </script>
 </body>
