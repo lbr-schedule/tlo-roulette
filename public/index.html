@@ -48,6 +48,20 @@
         
         .topup-section { margin-top: 12px; }
         .topup-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #00c853, #00e676); border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; color: white; cursor: pointer; text-decoration: none; display: block; text-align: center; }
+        
+        /* Topup Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 9999; }
+        .modal-overlay.show { display: flex; }
+        .modal-box { background: linear-gradient(135deg, #1a1a2e, #16213e); border: 3px solid #00c853; border-radius: 16px; padding: 30px; max-width: 320px; width: 90%; text-align: center; }
+        .modal-box h3 { color: #00c853; font-size: 1.3rem; margin-bottom: 20px; }
+        .modal-box p { font-size: 0.85rem; color: #aaa; margin-bottom: 8px; }
+        .line-id-box { background: #0f0f1a; border: 2px solid #00c853; border-radius: 10px; padding: 15px; margin: 15px 0; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .line-id-value { color: #00ff88; font-size: 1.2rem; font-weight: bold; letter-spacing: 1px; }
+        .copy-btn { background: #00c853; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; cursor: pointer; font-weight: bold; white-space: nowrap; }
+        .copy-btn.copied { background: #888; }
+        .line-link-btn { display: block; width: 100%; padding: 14px; background: #00c853; color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; text-decoration: none; margin-top: 12px; text-align: center; }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: #888; cursor: pointer; background: none; border: none; }
+        .modal-hint { font-size: 0.8rem; color: #666; margin-top: 15px; line-height: 1.4; }
         .auth-section .required { color: #ff6b6b; }
     </style>
 </head>
@@ -96,8 +110,23 @@
             </div>
             
             <div class="topup-section">
-                <a href="https://line.me/ti/p/~happynewya" target="_blank" class="topup-btn">💰 聯絡儲值</a>
+                <button class="topup-btn" onclick="showTopupModal()">💰 儲值</button>
             </div>
+        </div>
+    </div>
+
+    <!-- 儲值 Modal -->
+    <div class="modal-overlay" id="topupModal">
+        <div class="modal-box">
+            <h3>💰 聯絡儲值</h3>
+            <p>複製LINE ID，搜尋新增好友</p>
+            <div class="line-id-box">
+                <span class="line-id-value" id="lineIdText">HAPPYNEWYA</span>
+                <button class="copy-btn" id="copyBtn" onclick="copyLineId()">複製</button>
+            </div>
+            <p>或直接點擊連結加LINE</p>
+            <a href="https://line.me/ti/p/~happynewya" target="_blank" class="line-link-btn">💬 加我LINE</a>
+            <p class="modal-hint">匯款後請截圖傳給管理員<br>確認後將金幣發送至您的帳戶</p>
         </div>
     </div>
 
@@ -190,6 +219,32 @@
             document.getElementById('gameSection').style.display = 'block';
             connect();
         }
+        
+        function showTopupModal() {
+            document.getElementById('topupModal').classList.add('show');
+        }
+        
+        function closeTopupModal() {
+            document.getElementById('topupModal').classList.remove('show');
+        }
+        
+        function copyLineId() {
+            const text = document.getElementById('lineIdText').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById('copyBtn');
+                btn.textContent = '已複製!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = '複製';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+        
+        // 點擊背景關閉 Modal
+        document.getElementById('topupModal').addEventListener('click', function(e) {
+            if (e.target === this) closeTopupModal();
+        });
     </script>
 </body>
 </html>
