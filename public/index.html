@@ -9,10 +9,10 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* ── 星空背景 ── */
+        /* ── 星空背景（三層疊加） ── */
         body {
             font-family: 'Noto Sans TC', 'Segoe UI', sans-serif;
-            background: #0a0a1a;
+            background: #050510;
             min-height: 100vh;
             color: white;
             overflow-x: hidden;
@@ -20,25 +20,64 @@
         .stars {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: 0;
+        }
+        .stars-layer-1 {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background:
-                radial-gradient(2px 2px at 20% 30%, #fff 50%, transparent 100%),
-                radial-gradient(2px 2px at 40% 70%, #fff 50%, transparent 100%),
-                radial-gradient(1px 1px at 60% 20%, #fff 50%, transparent 100%),
-                radial-gradient(2px 2px at 80% 50%, #fff 50%, transparent 100%),
-                radial-gradient(1px 1px at 10% 80%, #fff 50%, transparent 100%),
-                radial-gradient(2px 2px at 90% 10%, #fff 50%, transparent 100%),
-                radial-gradient(1px 1px at 30% 90%, #fff 50%, transparent 100%),
-                radial-gradient(2px 2px at 70% 60%, #fff 50%, transparent 100%),
-                radial-gradient(1px 1px at 50% 40%, rgba(255,255,255,0.8) 50%, transparent 100%),
-                radial-gradient(2px 2px at 15% 55%, rgba(255,255,255,0.8) 50%, transparent 100%),
-                radial-gradient(1px 1px at 85% 75%, rgba(255,255,255,0.8) 50%, transparent 100%),
-                radial-gradient(2px 2px at 45% 15%, rgba(255,255,255,0.6) 50%, transparent 100%);
-            background-size: 400px 400px;
-            animation: starDrift 60s linear infinite;
+                radial-gradient(2.5px 2.5px at 8% 12%, #fff 45%, transparent 100%),
+                radial-gradient(3px 3px at 23% 45%, #ffe8c0 45%, transparent 100%),
+                radial-gradient(2px 2px at 38% 78%, #fff 45%, transparent 100%),
+                radial-gradient(2.5px 2.5px at 53% 28%, #fff 45%, transparent 100%),
+                radial-gradient(3px 3px at 68% 62%, #c8e0ff 45%, transparent 100%),
+                radial-gradient(2px 2px at 78% 8%, #fff 45%, transparent 100%),
+                radial-gradient(2.5px 2.5px at 88% 52%, #ffe0c8 45%, transparent 100%),
+                radial-gradient(2px 2px at 13% 88%, #fff 45%, transparent 100%),
+                radial-gradient(3px 3px at 33% 18%, #fff 45%, transparent 100%),
+                radial-gradient(2px 2px at 63% 92%, #c8f0ff 45%, transparent 100%),
+                radial-gradient(2.5px 2.5px at 93% 33%, #fff 45%, transparent 100%),
+                radial-gradient(2px 2px at 48% 58%, #fff 45%, transparent 100%),
+                radial-gradient(3px 3px at 3% 65%, #ffe8c0 45%, transparent 100%),
+                radial-gradient(2px 2px at 73% 42%, #fff 45%, transparent 100%),
+                radial-gradient(2.5px 2.5px at 28% 3%, #c8e0ff 45%, transparent 100%);
+            background-size: 350px 350px;
+            animation: starDrift 80s linear infinite;
+        }
+        .stars-layer-2 {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background:
+                radial-gradient(1px 1px at 5% 22%, rgba(255,255,255,0.7) 40%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 18% 55%, rgba(255,255,255,0.6) 40%, transparent 100%),
+                radial-gradient(1px 1px at 32% 8%, rgba(255,255,255,0.8) 40%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 47% 72%, rgba(255,255,255,0.5) 40%, transparent 100%),
+                radial-gradient(1px 1px at 62% 35%, rgba(255,255,255,0.7) 40%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 77% 18%, rgba(255,255,255,0.6) 40%, transparent 100%),
+                radial-gradient(1px 1px at 92% 68%, rgba(255,255,255,0.8) 40%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 42% 48%, rgba(255,255,255,0.5) 40%, transparent 100%),
+                radial-gradient(1px 1px at 57% 85%, rgba(255,255,255,0.6) 40%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 72% 92%, rgba(255,255,255,0.7) 40%, transparent 100%);
+            background-size: 500px 500px;
+            animation: starDrift2 120s linear infinite reverse;
+        }
+        .stars-layer-3 {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background:
+                radial-gradient(2px 2px at 15% 35%, rgba(200,220,255,0.9) 40%, transparent 100%),
+                radial-gradient(3px 3px at 45% 15%, rgba(255,240,200,0.9) 40%, transparent 100%),
+                radial-gradient(2px 2px at 75% 65%, rgba(200,255,230,0.8) 40%, transparent 100%);
+            background-size: 280px 280px;
+            animation: starTwinkle 4s ease-in-out infinite alternate;
         }
         @keyframes starDrift {
             from { background-position: 0 0; }
-            to { background-position: 400px 400px; }
+            to { background-position: 350px 350px; }
+        }
+        @keyframes starDrift2 {
+            from { background-position: 0 0; }
+            to { background-position: 500px 500px; }
+        }
+        @keyframes starTwinkle {
+            0% { opacity: 0.4; }
+            100% { opacity: 1; }
         }
 
         /* ── 頁首 ── */
@@ -50,7 +89,7 @@
             font-weight: 900;
             color: #ffd700;
             letter-spacing: 3px;
-            text-shadow: 0 0 10px #ffd700, 0 0 20px #ff8c00, 0 0 40px #ff6b00;
+            text-shadow: 0 0 10px #ffd700, 0 0 25px #ff8c00, 0 0 50px #ff6b00, 0 0 80px #ff4500;
             position: relative; z-index: 1;
         }
 
@@ -66,14 +105,14 @@
             border: 1px solid rgba(255, 215, 0, 0.3);
             border-radius: 16px;
             backdrop-filter: blur(8px);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1), inset 0 0 20px rgba(255, 215, 0, 0.03);
         }
         .balance span {
             color: #ffd700;
             font-family: 'Orbitron', monospace;
             font-weight: 700;
             font-size: 1.6rem;
-            text-shadow: 0 0 8px #ffd700;
+            text-shadow: 0 0 8px #ffd700, 0 0 20px rgba(255, 215, 0, 0.5);
             transition: transform 0.2s;
             display: inline-block;
         }
@@ -89,28 +128,59 @@
         /* ── 贏錢閃光 ── */
         .win-flash {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(255,215,0,0.4) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(255,215,0,0.45) 0%, transparent 65%);
             pointer-events: none; z-index: 9998;
-            opacity: 0; transition: opacity 0.1s;
+            opacity: 0;
         }
-        .win-flash.active { opacity: 1; animation: flashBurst 0.6s ease-out forwards; }
+        .win-flash.active { opacity: 1; animation: flashBurst 0.7s ease-out forwards; }
         @keyframes flashBurst {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
+            0% { opacity: 1; transform: scale(0.8); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+            100% { opacity: 0; transform: scale(1.3); }
         }
 
-        /* ── 轉盤 ── */
+        /* ── 轉盤加強版 ── */
         .wheel-container { text-align: center; margin: 20px 0; }
+        .wheel-outer-glow {
+            position: relative;
+            display: inline-block;
+            padding: 20px;
+        }
+        .wheel-outer-glow::before {
+            content: '';
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 280px; height: 280px;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                rgba(255,215,0,0.15) 0deg, transparent 30deg,
+                rgba(255,100,0,0.1) 60deg, transparent 90deg,
+                rgba(255,215,0,0.12) 120deg, transparent 150deg,
+                rgba(255,215,0,0.15) 180deg, transparent 210deg,
+                rgba(255,100,0,0.1) 240deg, transparent 270deg,
+                rgba(255,215,0,0.12) 300deg, transparent 330deg,
+                rgba(255,215,0,0.15) 360deg
+            );
+            filter: blur(12px);
+            animation: outerGlowRotate 10s linear infinite;
+        }
+        @keyframes outerGlowRotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
         .wheel {
-            width: 220px; height: 220px;
+            width: 240px; height: 240px;
             border-radius: 50%;
             margin: 0 auto;
-            border: 6px solid #ffd700;
+            border: 7px solid #ffd700;
             box-shadow:
-                0 0 15px #ffd700,
-                0 0 30px rgba(255, 215, 0, 0.5),
-                0 0 60px rgba(255, 140, 0, 0.3),
-                inset 0 0 20px rgba(255, 215, 0, 0.2);
+                0 0 20px #ffd700,
+                0 0 40px rgba(255, 215, 0, 0.7),
+                0 0 70px rgba(255, 140, 0, 0.5),
+                0 0 100px rgba(255, 100, 0, 0.3),
+                inset 0 0 25px rgba(255, 215, 0, 0.25),
+                inset 0 0 50px rgba(255, 200, 0, 0.1);
             background: conic-gradient(
                 #00aa00 0deg 9.7deg,
                 #cc0000 9.7deg 19.4deg,
@@ -151,19 +221,21 @@
                 #111 349.2deg 360deg
             );
             transition: box-shadow 0.3s;
+            position: relative; z-index: 1;
         }
         .wheel.spinning {
-            animation: wheelGlow 1s infinite alternate;
+            animation: wheelGlow 0.8s infinite alternate;
         }
         @keyframes wheelGlow {
-            from { box-shadow: 0 0 15px #ffd700, 0 0 30px rgba(255,215,0,0.5); }
-            to { box-shadow: 0 0 30px #ffd700, 0 0 60px rgba(255,215,0,0.8), 0 0 80px rgba(255,140,0,0.5); }
+            from { box-shadow: 0 0 20px #ffd700, 0 0 40px rgba(255,215,0,0.7), 0 0 70px rgba(255,140,0,0.5), 0 0 100px rgba(255,100,0,0.3), inset 0 0 25px rgba(255,215,0,0.25); }
+            to { box-shadow: 0 0 35px #ffd700, 0 0 70px rgba(255,215,0,0.9), 0 0 110px rgba(255,140,0,0.7), 0 0 150px rgba(255,100,0,0.4), inset 0 0 35px rgba(255,215,0,0.35); }
         }
         .wheel-pointer {
             font-size: 1.8rem;
             margin-bottom: 6px;
-            filter: drop-shadow(0 0 8px #ffd700);
+            filter: drop-shadow(0 0 10px #ffd700);
             line-height: 1;
+            position: relative; z-index: 2;
         }
 
         /* ── 結果顯示 ── */
@@ -181,7 +253,7 @@
             background: linear-gradient(135deg, rgba(204,0,0,0.5), rgba(255,50,50,0.3));
             border: 1px solid rgba(255,50,50,0.6);
             color: #ff6b6b;
-            box-shadow: 0 0 20px rgba(204,0,0,0.4);
+            box-shadow: 0 0 25px rgba(204,0,0,0.5);
         }
         .result-display.black {
             background: linear-gradient(135deg, rgba(40,40,40,0.8), rgba(80,80,80,0.4));
@@ -192,13 +264,14 @@
             background: linear-gradient(135deg, rgba(0,150,0,0.5), rgba(50,255,50,0.3));
             border: 1px solid rgba(50,255,50,0.5);
             color: #00ff88;
-            box-shadow: 0 0 20px rgba(0,200,0,0.4);
+            box-shadow: 0 0 25px rgba(0,200,0,0.5);
         }
         .result-display.spinning {
             background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,140,0,0.15));
             border: 1px solid rgba(255,215,0,0.4);
             animation: pulse 0.5s infinite alternate;
             color: #ffd700;
+            box-shadow: 0 0 20px rgba(255,215,0,0.2);
         }
         @keyframes pulse { from { opacity: 1; } to { opacity: 0.55; } }
 
@@ -208,7 +281,7 @@
             font-family: 'Orbitron', monospace;
             color: #ffd700;
             margin-bottom: 18px;
-            text-shadow: 0 0 8px #ffd700;
+            text-shadow: 0 0 10px #ffd700, 0 0 20px rgba(255,215,0,0.4);
             letter-spacing: 2px;
         }
 
@@ -236,45 +309,45 @@
             background: linear-gradient(135deg, #cc0000, #ff4444);
             color: white;
             border-color: rgba(255,80,80,0.5);
-            box-shadow: 0 4px 15px rgba(204,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(204,0,0,0.35), 0 0 20px rgba(255,0,0,0.15);
         }
         .bet-btn.red:hover {
-            box-shadow: 0 0 20px rgba(255,50,50,0.7), 0 0 40px rgba(255,0,0,0.3);
-            transform: translateY(-2px) scale(1.02);
-            border-color: #ff6666;
+            box-shadow: 0 0 25px rgba(255,50,50,0.8), 0 0 50px rgba(255,0,0,0.4), 0 4px 15px rgba(204,0,0,0.5);
+            transform: translateY(-3px) scale(1.03);
+            border-color: #ff8888;
         }
         .bet-btn.black {
             background: linear-gradient(135deg, #2a2a2a, #555555);
             color: white;
             border-color: rgba(150,150,150,0.4);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 15px rgba(150,150,150,0.1);
         }
         .bet-btn.black:hover {
-            box-shadow: 0 0 20px rgba(100,100,100,0.6), 0 0 40px rgba(150,150,150,0.2);
-            transform: translateY(-2px) scale(1.02);
-            border-color: #999;
+            box-shadow: 0 0 25px rgba(150,150,150,0.5), 0 0 50px rgba(200,200,200,0.2), 0 4px 15px rgba(0,0,0,0.5);
+            transform: translateY(-3px) scale(1.03);
+            border-color: #aaa;
         }
         .bet-btn.odd {
             background: linear-gradient(135deg, #0055cc, #00aaff);
             color: white;
             border-color: rgba(80,180,255,0.5);
-            box-shadow: 0 4px 15px rgba(0,100,200,0.3);
+            box-shadow: 0 4px 15px rgba(0,100,200,0.35), 0 0 20px rgba(0,150,255,0.15);
         }
         .bet-btn.odd:hover {
-            box-shadow: 0 0 20px rgba(0,150,255,0.6), 0 0 40px rgba(0,100,200,0.3);
-            transform: translateY(-2px) scale(1.02);
-            border-color: #55ccff;
+            box-shadow: 0 0 25px rgba(0,150,255,0.7), 0 0 50px rgba(0,100,200,0.35), 0 4px 15px rgba(0,100,200,0.4);
+            transform: translateY(-3px) scale(1.03);
+            border-color: #88ddff;
         }
         .bet-btn.even {
             background: linear-gradient(135deg, #5500aa, #aa00cc);
             color: white;
             border-color: rgba(180,80,220,0.5);
-            box-shadow: 0 4px 15px rgba(100,0,180,0.3);
+            box-shadow: 0 4px 15px rgba(100,0,180,0.35), 0 0 20px rgba(160,0,220,0.15);
         }
         .bet-btn.even:hover {
-            box-shadow: 0 0 20px rgba(160,0,220,0.6), 0 0 40px rgba(120,0,200,0.3);
-            transform: translateY(-2px) scale(1.02);
-            border-color: #cc66ff;
+            box-shadow: 0 0 25px rgba(160,0,220,0.7), 0 0 50px rgba(120,0,200,0.35), 0 4px 15px rgba(100,0,180,0.4);
+            transform: translateY(-3px) scale(1.03);
+            border-color: #cc88ff;
         }
 
         /* ── 數字下注 ── */
@@ -291,7 +364,7 @@
         }
         .number-bet input:focus {
             border-color: rgba(255,215,0,0.6);
-            box-shadow: 0 0 10px rgba(255,215,0,0.15);
+            box-shadow: 0 0 15px rgba(255,215,0,0.15);
         }
         .number-bet input::placeholder { color: rgba(255,255,255,0.3); }
         .number-bet button {
@@ -303,28 +376,29 @@
             font-size: 0.85rem;
             cursor: pointer;
             color: #1a1a2e;
-            box-shadow: 0 0 15px rgba(255,215,0,0.3);
+            box-shadow: 0 0 20px rgba(255,215,0,0.35), 0 4px 10px rgba(255,140,0,0.2);
             transition: all 0.2s;
             white-space: nowrap;
         }
         .number-bet button:hover {
-            box-shadow: 0 0 25px rgba(255,215,0,0.6);
-            transform: translateY(-1px);
+            box-shadow: 0 0 30px rgba(255,215,0,0.6), 0 0 50px rgba(255,140,0,0.3);
+            transform: translateY(-2px);
         }
 
         /* ── 我的下注 ── */
         .my-bets {
-            background: rgba(0,0,0,0.35);
+            background: rgba(0,0,0,0.4);
             padding: 14px;
             border-radius: 14px;
             margin-top: 12px;
             border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(8px);
         }
         .my-bets h4 {
             color: #ffd700;
             margin-bottom: 10px;
             font-size: 0.95rem;
-            text-shadow: 0 0 6px rgba(255,215,0,0.4);
+            text-shadow: 0 0 8px rgba(255,215,0,0.4);
             letter-spacing: 1px;
         }
         .bet-item {
@@ -338,11 +412,11 @@
 
         /* ── 登入區 ── */
         .auth-section {
-            background: rgba(255,255,255,0.05);
+            background: rgba(10,10,30,0.7);
             padding: 24px 20px;
             border-radius: 18px;
             border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
         }
         .auth-section input {
             width: 100%;
@@ -358,7 +432,7 @@
         }
         .auth-section input:focus {
             border-color: rgba(255,215,0,0.5);
-            box-shadow: 0 0 12px rgba(255,215,0,0.12);
+            box-shadow: 0 0 15px rgba(255,215,0,0.12);
         }
         .auth-section input::placeholder { color: rgba(255,255,255,0.3); }
         .auth-section label {
@@ -379,12 +453,12 @@
             margin-top: 8px;
             color: #1a1a2e;
             font-family: 'Noto Sans TC', sans-serif;
-            box-shadow: 0 0 20px rgba(255,215,0,0.25);
+            box-shadow: 0 0 25px rgba(255,215,0,0.3), 0 4px 15px rgba(255,140,0,0.2);
             transition: all 0.25s;
             letter-spacing: 2px;
         }
         .auth-section button:hover {
-            box-shadow: 0 0 35px rgba(255,215,0,0.5), 0 4px 20px rgba(255,140,0,0.3);
+            box-shadow: 0 0 40px rgba(255,215,0,0.55), 0 0 70px rgba(255,140,0,0.3), 0 4px 20px rgba(255,140,0,0.3);
             transform: translateY(-2px);
         }
         .auth-section .required { color: #ff6b6b; }
@@ -404,22 +478,22 @@
             display: block;
             text-align: center;
             text-decoration: none;
-            box-shadow: 0 0 20px rgba(0,200,83,0.3);
+            box-shadow: 0 0 25px rgba(0,200,83,0.35), 0 4px 15px rgba(0,200,83,0.2);
             transition: all 0.25s;
             letter-spacing: 1px;
         }
         .topup-btn:hover {
-            box-shadow: 0 0 35px rgba(0,230,118,0.6);
+            box-shadow: 0 0 40px rgba(0,230,118,0.65), 0 0 70px rgba(0,200,83,0.3);
             transform: translateY(-2px);
         }
 
         /* ── 儲值 Modal ── */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.88);
             display: none; justify-content: center; align-items: center;
             z-index: 9999;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(6px);
         }
         .modal-overlay.show { display: flex; }
         .modal-box {
@@ -429,10 +503,10 @@
             padding: 32px 28px;
             max-width: 340px; width: 90%;
             text-align: center;
-            box-shadow: 0 0 40px rgba(0,200,83,0.25), 0 20px 60px rgba(0,0,0,0.5);
+            box-shadow: 0 0 50px rgba(0,200,83,0.3), 0 20px 60px rgba(0,0,0,0.6);
             position: relative;
         }
-        .modal-box h3 { color: #00ff88; font-size: 1.3rem; margin-bottom: 18px; font-family: 'Orbitron', monospace; letter-spacing: 1px; }
+        .modal-box h3 { color: #00ff88; font-size: 1.3rem; margin-bottom: 18px; font-family: 'Orbitron', monospace; letter-spacing: 1px; text-shadow: 0 0 15px rgba(0,255,136,0.5); }
         .modal-box p { font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
         .line-id-box {
             background: #0a0f1a;
@@ -441,8 +515,9 @@
             padding: 16px;
             margin: 14px 0;
             display: flex; align-items: center; justify-content: space-between; gap: 12px;
+            box-shadow: 0 0 20px rgba(0,255,136,0.1);
         }
-        .line-id-value { color: #00ff88; font-size: 1.25rem; font-weight: 700; font-family: 'Orbitron', monospace; letter-spacing: 2px; }
+        .line-id-value { color: #00ff88; font-size: 1.25rem; font-weight: 700; font-family: 'Orbitron', monospace; letter-spacing: 2px; text-shadow: 0 0 10px rgba(0,255,136,0.4); }
         .copy-btn {
             background: #00c853; color: white;
             border: none; padding: 8px 18px;
@@ -451,8 +526,9 @@
             cursor: pointer;
             transition: all 0.2s;
             white-space: nowrap;
+            box-shadow: 0 0 15px rgba(0,200,83,0.3);
         }
-        .copy-btn:hover { background: #00e676; box-shadow: 0 0 15px rgba(0,200,83,0.5); }
+        .copy-btn:hover { background: #00e676; box-shadow: 0 0 20px rgba(0,230,118,0.6); }
         .copy-btn.copied { background: #555; }
         .line-link-btn {
             display: block; width: 100%; padding: 14px;
@@ -462,8 +538,9 @@
             text-decoration: none; margin-top: 12px;
             text-align: center;
             transition: all 0.2s;
+            box-shadow: 0 0 20px rgba(0,200,83,0.3);
         }
-        .line-link-btn:hover { background: #00e676; box-shadow: 0 0 20px rgba(0,230,118,0.5); }
+        .line-link-btn:hover { background: #00e676; box-shadow: 0 0 30px rgba(0,230,118,0.6); }
         .modal-close {
             position: absolute; top: 14px; right: 18px;
             font-size: 1.5rem; color: rgba(255,255,255,0.4);
@@ -473,13 +550,17 @@
         .modal-close:hover { color: white; }
         .modal-hint { font-size: 0.78rem; color: rgba(255,255,255,0.35); margin-top: 14px; line-height: 1.5; }
 
-        /* ── 游標樣式 ── */
+        /* ── 游標 ── */
         button { cursor: pointer; }
     </style>
 </head>
 <body>
-    <!-- 星空背景 -->
-    <div class="stars"></div>
+    <!-- 三層星空背景 -->
+    <div class="stars">
+        <div class="stars-layer-1"></div>
+        <div class="stars-layer-2"></div>
+        <div class="stars-layer-3"></div>
+    </div>
     <!-- 贏錢閃光 -->
     <div class="win-flash" id="winFlash"></div>
 
@@ -502,7 +583,9 @@
         <div class="game-section" id="gameSection" style="display:none;">
             <div class="wheel-container">
                 <div class="wheel-pointer">▼</div>
-                <div class="wheel" id="wheel"></div>
+                <div class="wheel-outer-glow">
+                    <div class="wheel" id="wheel"></div>
+                </div>
             </div>
 
             <div class="result-display" id="resultDisplay">等待開始...</div>
@@ -562,7 +645,7 @@
             f.classList.remove('active');
             void f.offsetWidth;
             f.classList.add('active');
-            setTimeout(() => f.classList.remove('active'), 700);
+            setTimeout(() => f.classList.remove('active'), 800);
         }
 
         function animateBalanceGain(amount) {
