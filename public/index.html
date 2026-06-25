@@ -4,73 +4,490 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎰 T-LO 俄羅斯輪盤</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; color: white; }
-        h1 { text-align: center; padding: 20px; color: #ffd700; font-size: 1.8rem; }
-        .container { max-width: 500px; margin: 0 auto; padding: 15px; }
-        
-        .balance { text-align: center; font-size: 1.3rem; margin-bottom: 15px; padding: 12px; background: rgba(255,215,0,0.15); border-radius: 12px; }
-        .balance span { color: #ffd700; font-weight: bold; }
-        
-        .wheel-container { text-align: center; margin: 15px 0; }
-        .wheel { width: 200px; height: 200px; border-radius: 50%; margin: 0 auto; border: 6px solid #ffd700; background: conic-gradient(#00aa00 0deg 9.7deg, #cc0000 9.7deg 19.4deg, #000 19.4deg 29.1deg, #cc0000 29.1deg 38.8deg, #000 38.8deg 48.5deg, #cc0000 48.5deg 58.2deg, #000 58.2deg 67.9deg, #cc0000 67.9deg 77.6deg, #000 77.6deg 87.3deg, #cc0000 87.3deg 97deg, #000 97deg 106.7deg, #cc0000 106.7deg 116.4deg, #000 116.4deg 126.1deg, #cc0000 126.1deg 135.8deg, #000 135.8deg 145.5deg, #cc0000 145.5deg 155.2deg, #000 155.2deg 164.9deg, #cc0000 164.9deg 174.6deg, #000 174.6deg 184.3deg, #cc0000 184.3deg 194deg, #000 194deg 203.7deg, #cc0000 203.7deg 213.4deg, #000 213.4deg 223.1deg, #cc0000 223.1deg 232.8deg, #000 232.8deg 242.5deg, #cc0000 242.5deg 252.2deg, #000 252.2deg 261.9deg, #cc0000 261.9deg 271.6deg, #000 271.6deg 281.3deg, #cc0000 281.3deg 291deg, #000 291deg 300.7deg, #cc0000 300.7deg 310.4deg, #000 310.4deg 320.1deg, #cc0000 320.1deg 329.8deg, #000 329.8deg 339.5deg, #cc0000 339.5deg 349.2deg, #000 349.2deg 360deg); }
-        .wheel-pointer { font-size: 1.5rem; margin-bottom: 5px; }
-        
-        .result-display { text-align: center; font-size: 1.5rem; padding: 15px; margin: 15px 0; border-radius: 12px; }
-        .result-display.red { background: rgba(204,0,0,0.3); }
-        .result-display.black { background: rgba(0,0,0,0.3); }
-        .result-display.green { background: rgba(0,170,0,0.3); }
-        .result-display.spinning { background: rgba(255,215,0,0.3); animation: pulse 0.5s infinite; }
-        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
-        
-        .timer { text-align: center; font-size: 1.2rem; color: #ffd700; margin-bottom: 15px; }
-        
-        .bet-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
-        .bet-btn { padding: 12px; border: none; border-radius: 10px; font-size: 0.95rem; font-weight: bold; cursor: pointer; }
-        .bet-btn.red { background: linear-gradient(135deg, #cc0000, #ff4444); color: white; }
-        .bet-btn.black { background: linear-gradient(135deg, #333, #666); color: white; }
-        .bet-btn.odd { background: linear-gradient(135deg, #0066cc, #00aaff); color: white; }
-        .bet-btn.even { background: linear-gradient(135deg, #660066, #aa00aa); color: white; }
-        
-        .number-bet { display: flex; gap: 8px; margin-bottom: 15px; }
-        .number-bet input { flex: 1; padding: 10px; border: 2px solid #555; border-radius: 8px; background: #2a2a4a; color: white; font-size: 0.9rem; }
-        .number-bet button { padding: 10px 15px; background: #ffd700; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
-        
-        .my-bets { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 10px; margin-top: 10px; }
-        .my-bets h4 { color: #ffd700; margin-bottom: 8px; font-size: 0.95rem; }
-        .bet-item { padding: 5px 0; border-bottom: 1px solid #444; font-size: 0.9rem; }
-        
-        .auth-section { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; }
-        .auth-section input { width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #555; border-radius: 10px; background: #2a2a4a; color: white; font-size: 0.95rem; }
-        .auth-section label { display: block; font-size: 0.85rem; color: #aaa; margin-bottom: 4px; }
-        .auth-section button { width: 100%; padding: 12px; background: linear-gradient(135deg, #ffd700, #ff8c00); border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 5px; }
-        
-        .topup-section { margin-top: 12px; }
-        .topup-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #00c853, #00e676); border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; color: white; cursor: pointer; text-decoration: none; display: block; text-align: center; }
-        
-        /* Topup Modal */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 9999; }
-        .modal-overlay.show { display: flex; }
-        .modal-box { background: linear-gradient(135deg, #1a1a2e, #16213e); border: 3px solid #00c853; border-radius: 16px; padding: 30px; max-width: 320px; width: 90%; text-align: center; }
-        .modal-box h3 { color: #00c853; font-size: 1.3rem; margin-bottom: 20px; }
-        .modal-box p { font-size: 0.85rem; color: #aaa; margin-bottom: 8px; }
-        .line-id-box { background: #0f0f1a; border: 2px solid #00c853; border-radius: 10px; padding: 15px; margin: 15px 0; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-        .line-id-value { color: #00ff88; font-size: 1.2rem; font-weight: bold; letter-spacing: 1px; }
-        .copy-btn { background: #00c853; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; cursor: pointer; font-weight: bold; white-space: nowrap; }
-        .copy-btn.copied { background: #888; }
-        .line-link-btn { display: block; width: 100%; padding: 14px; background: #00c853; color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; text-decoration: none; margin-top: 12px; text-align: center; }
-        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: #888; cursor: pointer; background: none; border: none; }
-        .modal-hint { font-size: 0.8rem; color: #666; margin-top: 15px; line-height: 1.4; }
+
+        /* ── 星空背景 ── */
+        body {
+            font-family: 'Noto Sans TC', 'Segoe UI', sans-serif;
+            background: #0a0a1a;
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+        .stars {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+            background:
+                radial-gradient(2px 2px at 20% 30%, #fff 50%, transparent 100%),
+                radial-gradient(2px 2px at 40% 70%, #fff 50%, transparent 100%),
+                radial-gradient(1px 1px at 60% 20%, #fff 50%, transparent 100%),
+                radial-gradient(2px 2px at 80% 50%, #fff 50%, transparent 100%),
+                radial-gradient(1px 1px at 10% 80%, #fff 50%, transparent 100%),
+                radial-gradient(2px 2px at 90% 10%, #fff 50%, transparent 100%),
+                radial-gradient(1px 1px at 30% 90%, #fff 50%, transparent 100%),
+                radial-gradient(2px 2px at 70% 60%, #fff 50%, transparent 100%),
+                radial-gradient(1px 1px at 50% 40%, rgba(255,255,255,0.8) 50%, transparent 100%),
+                radial-gradient(2px 2px at 15% 55%, rgba(255,255,255,0.8) 50%, transparent 100%),
+                radial-gradient(1px 1px at 85% 75%, rgba(255,255,255,0.8) 50%, transparent 100%),
+                radial-gradient(2px 2px at 45% 15%, rgba(255,255,255,0.6) 50%, transparent 100%);
+            background-size: 400px 400px;
+            animation: starDrift 60s linear infinite;
+        }
+        @keyframes starDrift {
+            from { background-position: 0 0; }
+            to { background-position: 400px 400px; }
+        }
+
+        /* ── 頁首 ── */
+        h1 {
+            text-align: center;
+            padding: 28px 20px 18px;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #ffd700;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #ffd700, 0 0 20px #ff8c00, 0 0 40px #ff6b00;
+            position: relative; z-index: 1;
+        }
+
+        .container { max-width: 480px; margin: 0 auto; padding: 0 16px 40px; position: relative; z-index: 1; }
+
+        /* ── 餘額面板 ── */
+        .balance {
+            text-align: center;
+            font-size: 1.4rem;
+            margin-bottom: 18px;
+            padding: 14px 20px;
+            background: rgba(255, 215, 0, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+        }
+        .balance span {
+            color: #ffd700;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1.6rem;
+            text-shadow: 0 0 8px #ffd700;
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+        .balance span.pop {
+            animation: coinPop 0.4s ease-out;
+        }
+        @keyframes coinPop {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.35) rotate(-5deg); color: #fff; text-shadow: 0 0 20px #ffd700; }
+            100% { transform: scale(1); }
+        }
+
+        /* ── 贏錢閃光 ── */
+        .win-flash {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(255,215,0,0.4) 0%, transparent 70%);
+            pointer-events: none; z-index: 9998;
+            opacity: 0; transition: opacity 0.1s;
+        }
+        .win-flash.active { opacity: 1; animation: flashBurst 0.6s ease-out forwards; }
+        @keyframes flashBurst {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* ── 轉盤 ── */
+        .wheel-container { text-align: center; margin: 20px 0; }
+        .wheel {
+            width: 220px; height: 220px;
+            border-radius: 50%;
+            margin: 0 auto;
+            border: 6px solid #ffd700;
+            box-shadow:
+                0 0 15px #ffd700,
+                0 0 30px rgba(255, 215, 0, 0.5),
+                0 0 60px rgba(255, 140, 0, 0.3),
+                inset 0 0 20px rgba(255, 215, 0, 0.2);
+            background: conic-gradient(
+                #00aa00 0deg 9.7deg,
+                #cc0000 9.7deg 19.4deg,
+                #111 19.4deg 29.1deg,
+                #cc0000 29.1deg 38.8deg,
+                #111 38.8deg 48.5deg,
+                #cc0000 48.5deg 58.2deg,
+                #111 58.2deg 67.9deg,
+                #cc0000 67.9deg 77.6deg,
+                #111 77.6deg 87.3deg,
+                #cc0000 87.3deg 97deg,
+                #111 97deg 106.7deg,
+                #cc0000 106.7deg 116.4deg,
+                #111 116.4deg 126.1deg,
+                #cc0000 126.1deg 135.8deg,
+                #111 135.8deg 145.5deg,
+                #cc0000 145.5deg 155.2deg,
+                #111 155.2deg 164.9deg,
+                #cc0000 164.9deg 174.6deg,
+                #111 174.6deg 184.3deg,
+                #cc0000 184.3deg 194deg,
+                #111 194deg 203.7deg,
+                #cc0000 203.7deg 213.4deg,
+                #111 213.4deg 223.1deg,
+                #cc0000 223.1deg 232.8deg,
+                #111 232.8deg 242.5deg,
+                #cc0000 242.5deg 252.2deg,
+                #111 252.2deg 261.9deg,
+                #cc0000 261.9deg 271.6deg,
+                #111 271.6deg 281.3deg,
+                #cc0000 281.3deg 291deg,
+                #111 291deg 300.7deg,
+                #cc0000 300.7deg 310.4deg,
+                #111 310.4deg 320.1deg,
+                #cc0000 320.1deg 329.8deg,
+                #111 329.8deg 339.5deg,
+                #cc0000 339.5deg 349.2deg,
+                #111 349.2deg 360deg
+            );
+            transition: box-shadow 0.3s;
+        }
+        .wheel.spinning {
+            animation: wheelGlow 1s infinite alternate;
+        }
+        @keyframes wheelGlow {
+            from { box-shadow: 0 0 15px #ffd700, 0 0 30px rgba(255,215,0,0.5); }
+            to { box-shadow: 0 0 30px #ffd700, 0 0 60px rgba(255,215,0,0.8), 0 0 80px rgba(255,140,0,0.5); }
+        }
+        .wheel-pointer {
+            font-size: 1.8rem;
+            margin-bottom: 6px;
+            filter: drop-shadow(0 0 8px #ffd700);
+            line-height: 1;
+        }
+
+        /* ── 結果顯示 ── */
+        .result-display {
+            text-align: center;
+            font-size: 1.4rem;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 14px;
+            font-weight: 700;
+            min-height: 60px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .result-display.red {
+            background: linear-gradient(135deg, rgba(204,0,0,0.5), rgba(255,50,50,0.3));
+            border: 1px solid rgba(255,50,50,0.6);
+            color: #ff6b6b;
+            box-shadow: 0 0 20px rgba(204,0,0,0.4);
+        }
+        .result-display.black {
+            background: linear-gradient(135deg, rgba(40,40,40,0.8), rgba(80,80,80,0.4));
+            border: 1px solid rgba(150,150,150,0.5);
+            color: #cccccc;
+        }
+        .result-display.green {
+            background: linear-gradient(135deg, rgba(0,150,0,0.5), rgba(50,255,50,0.3));
+            border: 1px solid rgba(50,255,50,0.5);
+            color: #00ff88;
+            box-shadow: 0 0 20px rgba(0,200,0,0.4);
+        }
+        .result-display.spinning {
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,140,0,0.15));
+            border: 1px solid rgba(255,215,0,0.4);
+            animation: pulse 0.5s infinite alternate;
+            color: #ffd700;
+        }
+        @keyframes pulse { from { opacity: 1; } to { opacity: 0.55; } }
+
+        .timer {
+            text-align: center;
+            font-size: 1.3rem;
+            font-family: 'Orbitron', monospace;
+            color: #ffd700;
+            margin-bottom: 18px;
+            text-shadow: 0 0 8px #ffd700;
+            letter-spacing: 2px;
+        }
+
+        /* ── 下注按鈕 ── */
+        .bet-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 14px; }
+        .bet-btn {
+            padding: 14px 8px;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .bet-btn::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+            opacity: 0; transition: opacity 0.25s;
+        }
+        .bet-btn:hover::before { opacity: 1; }
+        .bet-btn.red {
+            background: linear-gradient(135deg, #cc0000, #ff4444);
+            color: white;
+            border-color: rgba(255,80,80,0.5);
+            box-shadow: 0 4px 15px rgba(204,0,0,0.3);
+        }
+        .bet-btn.red:hover {
+            box-shadow: 0 0 20px rgba(255,50,50,0.7), 0 0 40px rgba(255,0,0,0.3);
+            transform: translateY(-2px) scale(1.02);
+            border-color: #ff6666;
+        }
+        .bet-btn.black {
+            background: linear-gradient(135deg, #2a2a2a, #555555);
+            color: white;
+            border-color: rgba(150,150,150,0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        .bet-btn.black:hover {
+            box-shadow: 0 0 20px rgba(100,100,100,0.6), 0 0 40px rgba(150,150,150,0.2);
+            transform: translateY(-2px) scale(1.02);
+            border-color: #999;
+        }
+        .bet-btn.odd {
+            background: linear-gradient(135deg, #0055cc, #00aaff);
+            color: white;
+            border-color: rgba(80,180,255,0.5);
+            box-shadow: 0 4px 15px rgba(0,100,200,0.3);
+        }
+        .bet-btn.odd:hover {
+            box-shadow: 0 0 20px rgba(0,150,255,0.6), 0 0 40px rgba(0,100,200,0.3);
+            transform: translateY(-2px) scale(1.02);
+            border-color: #55ccff;
+        }
+        .bet-btn.even {
+            background: linear-gradient(135deg, #5500aa, #aa00cc);
+            color: white;
+            border-color: rgba(180,80,220,0.5);
+            box-shadow: 0 4px 15px rgba(100,0,180,0.3);
+        }
+        .bet-btn.even:hover {
+            box-shadow: 0 0 20px rgba(160,0,220,0.6), 0 0 40px rgba(120,0,200,0.3);
+            transform: translateY(-2px) scale(1.02);
+            border-color: #cc66ff;
+        }
+
+        /* ── 數字下注 ── */
+        .number-bet { display: flex; gap: 10px; margin-bottom: 16px; align-items: center; }
+        .number-bet input {
+            flex: 1; padding: 12px 10px;
+            border: 2px solid rgba(255,215,0,0.25);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.06);
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .number-bet input:focus {
+            border-color: rgba(255,215,0,0.6);
+            box-shadow: 0 0 10px rgba(255,215,0,0.15);
+        }
+        .number-bet input::placeholder { color: rgba(255,255,255,0.3); }
+        .number-bet button {
+            padding: 12px 14px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #1a1a2e;
+            box-shadow: 0 0 15px rgba(255,215,0,0.3);
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .number-bet button:hover {
+            box-shadow: 0 0 25px rgba(255,215,0,0.6);
+            transform: translateY(-1px);
+        }
+
+        /* ── 我的下注 ── */
+        .my-bets {
+            background: rgba(0,0,0,0.35);
+            padding: 14px;
+            border-radius: 14px;
+            margin-top: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .my-bets h4 {
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            text-shadow: 0 0 6px rgba(255,215,0,0.4);
+            letter-spacing: 1px;
+        }
+        .bet-item {
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            display: flex; justify-content: space-between;
+        }
+        .bet-item:last-child { border-bottom: none; }
+
+        /* ── 登入區 ── */
+        .auth-section {
+            background: rgba(255,255,255,0.05);
+            padding: 24px 20px;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+        .auth-section input {
+            width: 100%;
+            padding: 13px 14px;
+            margin-bottom: 10px;
+            border: 2px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.06);
+            color: white;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .auth-section input:focus {
+            border-color: rgba(255,215,0,0.5);
+            box-shadow: 0 0 12px rgba(255,215,0,0.12);
+        }
+        .auth-section input::placeholder { color: rgba(255,255,255,0.3); }
+        .auth-section label {
+            display: block;
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 4px;
+        }
+        .auth-section button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 8px;
+            color: #1a1a2e;
+            font-family: 'Noto Sans TC', sans-serif;
+            box-shadow: 0 0 20px rgba(255,215,0,0.25);
+            transition: all 0.25s;
+            letter-spacing: 2px;
+        }
+        .auth-section button:hover {
+            box-shadow: 0 0 35px rgba(255,215,0,0.5), 0 4px 20px rgba(255,140,0,0.3);
+            transform: translateY(-2px);
+        }
         .auth-section .required { color: #ff6b6b; }
+
+        /* ── 儲值按鈕 ── */
+        .topup-section { margin-top: 14px; }
+        .topup-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #00c853, #00e676);
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 0 20px rgba(0,200,83,0.3);
+            transition: all 0.25s;
+            letter-spacing: 1px;
+        }
+        .topup-btn:hover {
+            box-shadow: 0 0 35px rgba(0,230,118,0.6);
+            transform: translateY(-2px);
+        }
+
+        /* ── 儲值 Modal ── */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none; justify-content: center; align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-box {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 3px solid #00c853;
+            border-radius: 20px;
+            padding: 32px 28px;
+            max-width: 340px; width: 90%;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(0,200,83,0.25), 0 20px 60px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .modal-box h3 { color: #00ff88; font-size: 1.3rem; margin-bottom: 18px; font-family: 'Orbitron', monospace; letter-spacing: 1px; }
+        .modal-box p { font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+        .line-id-box {
+            background: #0a0f1a;
+            border: 2px solid #00ff88;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 14px 0;
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        }
+        .line-id-value { color: #00ff88; font-size: 1.25rem; font-weight: 700; font-family: 'Orbitron', monospace; letter-spacing: 2px; }
+        .copy-btn {
+            background: #00c853; color: white;
+            border: none; padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 0.9rem; font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .copy-btn:hover { background: #00e676; box-shadow: 0 0 15px rgba(0,200,83,0.5); }
+        .copy-btn.copied { background: #555; }
+        .line-link-btn {
+            display: block; width: 100%; padding: 14px;
+            background: #00c853; color: white;
+            border: none; border-radius: 12px;
+            font-size: 1rem; font-weight: 700;
+            text-decoration: none; margin-top: 12px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .line-link-btn:hover { background: #00e676; box-shadow: 0 0 20px rgba(0,230,118,0.5); }
+        .modal-close {
+            position: absolute; top: 14px; right: 18px;
+            font-size: 1.5rem; color: rgba(255,255,255,0.4);
+            cursor: pointer; background: none; border: none;
+            transition: color 0.2s;
+        }
+        .modal-close:hover { color: white; }
+        .modal-hint { font-size: 0.78rem; color: rgba(255,255,255,0.35); margin-top: 14px; line-height: 1.5; }
+
+        /* ── 游標樣式 ── */
+        button { cursor: pointer; }
     </style>
 </head>
 <body>
+    <!-- 星空背景 -->
+    <div class="stars"></div>
+    <!-- 贏錢閃光 -->
+    <div class="win-flash" id="winFlash"></div>
+
     <h1>🎰 T-LO 俄羅斯輪盤</h1>
-    
+
     <div class="container">
-        <div class="balance">💰 餘額: <span id="balance">1000</span></div>
-        
+        <div class="balance">💰 餘額 <span id="balance">1000</span></div>
+
         <div class="auth-section" id="authSection">
             <input type="text" id="username" placeholder="帳號名稱" value="Player1">
             <label>姓名 <span class="required">*</span></label>
@@ -79,36 +496,36 @@
             <input type="tel" id="phone" placeholder="聯絡電話">
             <label>信箱</label>
             <input type="email" id="email" placeholder="電子郵件（選填）">
-            <button onclick="doLogin()">開始遊戲</button>
+            <button onclick="doLogin()">▶ 開始遊戲</button>
         </div>
-        
+
         <div class="game-section" id="gameSection" style="display:none;">
             <div class="wheel-container">
                 <div class="wheel-pointer">▼</div>
-                <div class="wheel"></div>
+                <div class="wheel" id="wheel"></div>
             </div>
-            
+
             <div class="result-display" id="resultDisplay">等待開始...</div>
-            <div class="timer" id="timer">-</div>
-            
+            <div class="timer" id="timer">—</div>
+
             <div class="bet-buttons">
                 <button class="bet-btn red" onclick="placeBet('color', 50, 'red')">🔴 紅 (2x)</button>
                 <button class="bet-btn black" onclick="placeBet('color', 50, 'black')">⚫ 黑 (2x)</button>
                 <button class="bet-btn odd" onclick="placeBet('odd_even', 50, 'odd')">🔢 單 (2x)</button>
                 <button class="bet-btn even" onclick="placeBet('odd_even', 50, 'even')">⚇ 雙 (2x)</button>
             </div>
-            
+
             <div class="number-bet">
                 <input type="number" id="betNum" placeholder="數字 0-36" min="0" max="36">
                 <input type="number" id="betAmt" placeholder="金額" min="10" value="50">
-                <button onclick="placeNumberBet()">數字 (10x)</button>
+                <button onclick="placeNumberBet()">數 (10x)</button>
             </div>
-            
+
             <div class="my-bets">
                 <h4>📋 我的下注</h4>
                 <div id="myBets">尚無下注</div>
             </div>
-            
+
             <div class="topup-section">
                 <button class="topup-btn" onclick="showTopupModal()">💰 儲值</button>
             </div>
@@ -118,13 +535,13 @@
     <!-- 儲值 Modal -->
     <div class="modal-overlay" id="topupModal">
         <div class="modal-box">
+            <button class="modal-close" onclick="closeTopupModal()">✕</button>
             <h3>💰 聯絡儲值</h3>
             <p>複製LINE ID，搜尋新增好友</p>
             <div class="line-id-box">
                 <span class="line-id-value" id="lineIdText">HAPPYNEWYA</span>
                 <button class="copy-btn" id="copyBtn" onclick="copyLineId()">複製</button>
             </div>
-            <p>或直接點擊連結加LINE</p>
             <a href="https://line.me/ti/p/~happynewya" target="_blank" class="line-link-btn">💬 加我LINE</a>
             <p class="modal-hint">匯款後請截圖傳給管理員<br>確認後將金幣發送至您的帳戶</p>
         </div>
@@ -132,14 +549,29 @@
 
     <script>
         let ws, myName = '', myBalance = 1000, gamePhase = 'idle', myCurrentBets = [], myProfile = {};
-        
+
         function connect() {
             ws = new WebSocket('ws://' + location.host);
             ws.onopen = () => ws.send(JSON.stringify({ type: 'join', username: myName, profile: myProfile }));
             ws.onmessage = (e) => handleMessage(JSON.parse(e.data));
             ws.onclose = () => setTimeout(connect, 3000);
         }
-        
+
+        function triggerWinFlash() {
+            const f = document.getElementById('winFlash');
+            f.classList.remove('active');
+            void f.offsetWidth;
+            f.classList.add('active');
+            setTimeout(() => f.classList.remove('active'), 700);
+        }
+
+        function animateBalanceGain(amount) {
+            const el = document.getElementById('balance');
+            el.classList.remove('pop');
+            void el.offsetWidth;
+            el.classList.add('pop');
+        }
+
         function handleMessage(data) {
             switch(data.type) {
                 case 'joined':
@@ -151,6 +583,7 @@
                     myCurrentBets = [];
                     document.getElementById('resultDisplay').textContent = '⏰ 下注時間!';
                     document.getElementById('resultDisplay').className = 'result-display spinning';
+                    document.getElementById('wheel').classList.remove('spinning');
                     updateTimer(data.duration);
                     updateMyBets();
                     break;
@@ -158,40 +591,47 @@
                     gamePhase = 'spinning';
                     document.getElementById('resultDisplay').textContent = '🎰 轉動中...';
                     document.getElementById('resultDisplay').className = 'result-display spinning';
+                    document.getElementById('wheel').classList.add('spinning');
                     break;
                 case 'result':
                     gamePhase = 'result';
+                    document.getElementById('wheel').classList.remove('spinning');
                     const colors = { red: '🔴 紅色', black: '⚫ 黑色', green: '🟢 綠色' };
                     document.getElementById('resultDisplay').textContent = '結果: ' + data.result + ' ' + colors[data.color];
                     document.getElementById('resultDisplay').className = 'result-display ' + data.color;
                     const myWin = data.winners.find(w => w.username === myName);
                     const myLoss = data.losers.find(l => l.username === myName);
-                    if (myWin) { myBalance += myWin.prize; alert('🎉 贏了 ' + myWin.prize + '！'); }
+                    if (myWin) {
+                        myBalance += myWin.prize;
+                        triggerWinFlash();
+                        animateBalanceGain(myWin.prize);
+                        alert('🎉 贏了 ' + myWin.prize + ' 金幣！');
+                    }
                     if (myLoss) { myBalance -= myLoss.amount; }
                     document.getElementById('balance').textContent = myBalance;
                     break;
             }
         }
-        
+
         let timerInterval;
         function updateTimer(duration) {
             clearInterval(timerInterval);
             let sec = Math.floor(duration / 1000);
+            document.getElementById('timer').textContent = '⏰ ' + sec + 's';
             timerInterval = setInterval(() => {
                 sec--;
-                document.getElementById('timer').textContent = '⏰ ' + sec + '秒';
+                document.getElementById('timer').textContent = sec > 0 ? '⏰ ' + sec + 's' : '—';
                 if (sec <= 0) clearInterval(timerInterval);
             }, 1000);
-            document.getElementById('timer').textContent = '⏰ ' + sec + '秒';
         }
-        
+
         function placeBet(type, amount, choice) {
             if (gamePhase !== 'betting') { alert('現在不能下注！'); return; }
             ws.send(JSON.stringify({ type: 'bet', username: myName, betType: type, amount, color: choice, choice }));
             myCurrentBets.push({ type, amount, info: choice });
             updateMyBets();
         }
-        
+
         function placeNumberBet() {
             const num = parseInt(document.getElementById('betNum').value);
             const amt = parseInt(document.getElementById('betAmt').value);
@@ -202,13 +642,13 @@
             myCurrentBets.push({ type: 'number', amount: amt, info: '#' + num });
             updateMyBets();
         }
-        
+
         function updateMyBets() {
-            document.getElementById('myBets').innerHTML = myCurrentBets.length ? 
-                myCurrentBets.map(b => '<div class="bet-item">' + b.info + ' → ' + b.amount + '</div>').join('') : 
-                '尚無下注';
+            document.getElementById('myBets').innerHTML = myCurrentBets.length
+                ? myCurrentBets.map(b => '<div class="bet-item"><span>' + b.info + '</span><span>' + b.amount + '</span></div>').join('')
+                : '尚無下注';
         }
-        
+
         function doLogin() {
             myName = document.getElementById('username').value || 'Player' + Math.floor(Math.random() * 1000);
             const realname = document.getElementById('realname').value;
@@ -219,29 +659,20 @@
             document.getElementById('gameSection').style.display = 'block';
             connect();
         }
-        
-        function showTopupModal() {
-            document.getElementById('topupModal').classList.add('show');
-        }
-        
-        function closeTopupModal() {
-            document.getElementById('topupModal').classList.remove('show');
-        }
-        
+
+        function showTopupModal() { document.getElementById('topupModal').classList.add('show'); }
+        function closeTopupModal() { document.getElementById('topupModal').classList.remove('show'); }
+
         function copyLineId() {
             const text = document.getElementById('lineIdText').textContent;
             navigator.clipboard.writeText(text).then(() => {
                 const btn = document.getElementById('copyBtn');
                 btn.textContent = '已複製!';
                 btn.classList.add('copied');
-                setTimeout(() => {
-                    btn.textContent = '複製';
-                    btn.classList.remove('copied');
-                }, 2000);
+                setTimeout(() => { btn.textContent = '複製'; btn.classList.remove('copied'); }, 2000);
             });
         }
-        
-        // 點擊背景關閉 Modal
+
         document.getElementById('topupModal').addEventListener('click', function(e) {
             if (e.target === this) closeTopupModal();
         });
